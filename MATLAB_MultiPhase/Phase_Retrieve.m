@@ -11,7 +11,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [Phi_Retrieved] = Phase_Retrieve(U_Object,lambda_min,d_lambda,lambda_max)
+function [U_Retrieved,I_Retrieved,Phi_Retrieved] = Phase_Retrieve(U_Object,lambda_min,d_lambda,lambda_max)
 
 %%%%%%%%%%%%%%%%%%%%%%% Generating Recordings %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Obj_Cam_Dist = 300;
@@ -42,7 +42,7 @@ phi_q = rand(256,256);
 MSE = 1000;
 Minimum_error = 1000;
 it = 10;
-MSE_trend = 0;
+MSE_trend = 100;
 a = 1;
 b = 1;
 next_lambda = lambda_min;
@@ -82,18 +82,26 @@ while MSE > 0 && it > 0
             %% Error Calculation
             D = abs((sqrt(I_front_t) - sqrt(I(:,:,q))))^2;
             MSE = sum(D(:))/numel(sqrt(I_front_t));
-%             fprintf("H_Error = %d\n",H_Error);
-%             fprintf("MSE = %d\n",MSE);
             if Minimum_error > MSE
                 Minimum_error = MSE;
                 Phi_Retrieved = Phi_back_t;
+                I_Retrieved = I_back_t;
+                U_Retrieved = U_back_t;
             end
-            MSE_trend = [MSE_trend; MSE];
+            MSE_trend = [MSE_trend; sqrt(MSE)];
             lambda = next_lambda;
     end
 end
 figure (10)
 plot(MSE_trend);
+xlabel("Iteration number");
+ylabel("Mean squared error");
+title("MSE Vs Iterations");
+grid minor;
+grid on;
+ax = gcf;
+exportgraphics(ax,'MSE.png','Resolution',300);
+
 figure(11)
 imagesc(h);
 colormap('hot');

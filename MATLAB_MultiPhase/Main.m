@@ -53,7 +53,8 @@ U = sqrt(I) .*exp(Phi*1i);
 %%%%%%%%%%%%%%%%%%%%  Display the Object  %%%%%%%%%%%%%%%%%%%%%%%%
 figure(1)
 % mesh(X,Y,abs(U));
-imagesc(abs(U));
+imagesc(abs(U).^2);
+colorbar;
 title("Object Intensity");
 ax = gcf;
 exportgraphics(ax,'Object_Intensity.png','Resolution',300);
@@ -61,6 +62,7 @@ exportgraphics(ax,'Object_Intensity.png','Resolution',300);
 figure (2)
 % mesh(X,Y,angle(U));
 imagesc(angle(U));
+colorbar;
 title("Object Phase");
 ax = gcf;
 exportgraphics(ax,'Object_Phase.png','Resolution',300);
@@ -73,6 +75,7 @@ exportgraphics(ax,'Object_Phase.png','Resolution',300);
 figure(3)
 % mesh(X,Y,I_n);
 imagesc(I_n);
+colorbar;
 title("Recorded Intensity pattern");
 ax = gcf;
 exportgraphics(ax,'Recorded_Intensity.png','Resolution',300);
@@ -80,6 +83,7 @@ exportgraphics(ax,'Recorded_Intensity.png','Resolution',300);
 figure(4)
 % mesh(X,Y,Phi_n);
 imagesc(Phi_n);
+colorbar;
 title("Recorded Phase patern");
 ax = gcf;
 exportgraphics(ax,'Recorded_Phase.png','Resolution',300);
@@ -91,6 +95,7 @@ exportgraphics(ax,'Recorded_Phase.png','Resolution',300);
 figure(5)
 % mesh(X,Y,I_back);
 imagesc(I_back);
+colorbar;
 title("Back propagated Intensity");
 ax = gcf;
 exportgraphics(ax,'Back_Propagated_Intensity.png','Resolution',300);
@@ -98,6 +103,7 @@ exportgraphics(ax,'Back_Propagated_Intensity.png','Resolution',300);
 figure(6)
 % mesh(X,Y,Phi_back);
 imagesc(Phi_back);
+colorbar;
 title("Back propagated Phase");
 ax = gcf;
 exportgraphics(ax,'Back_Propagated_Phase.png','Resolution',300);
@@ -105,13 +111,22 @@ exportgraphics(ax,'Back_Propagated_Phase.png','Resolution',300);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%  Phase Retrieved Wavefront  %%%%%%%%%%%%%%%%%%%%%%%%
-Retrieved_Phase = Phase_Retrieve(U,800,10,850);
+[~,Retrieved_Intensity,Retrieved_Phase] = Phase_Retrieve(U,800,5,850);
 
 figure(7)
 % mesh(X,Y,Retrieved_Phase);
 imagesc(Retrieved_Phase);
+colorbar;
 title("Retrieved Phase");
 ax = gcf;
 exportgraphics(ax,'Retrieved_Phase.png','Resolution',300);
+
+figure(8)
+% mesh(X,Y,Retrieved_Phase);
+imagesc(Retrieved_Intensity);
+colorbar;
+title("Reconstructed Intensity");
+ax = gcf;
+exportgraphics(ax,'Retrieved_Intensity.png','Resolution',300);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
